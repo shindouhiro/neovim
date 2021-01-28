@@ -1,5 +1,5 @@
 
- 
+
 " 
 "定义快捷键的前缀，即<Leader>
 let mapleader=";"
@@ -45,10 +45,8 @@ set nocompatible
 " vim 自身命令行模式智能补全
 set wildmenu
 call plug#begin('~/.config/nvim/plugged')
-
-
 Plug 'altercation/vim-colors-solarized'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 Plug 'tomasr/molokai'
 Plug 'vim-scripts/phd'
 Plug 'Lokaltog/vim-powerline'
@@ -73,17 +71,13 @@ Plug 'theniceboy/vim-snippets'
 Plug 'ap/vim-css-color'
 Plug 'tomtom/tcomment_vim'
 Plug 'posva/vim-vue'
-
-
-
-
 Plug 'junegunn/fzf.vim'
-
-
 Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'gcmt/wildfire.vim' " in Visual mode, type k' to select all text in '', or type k) k] k} kp
-
-
+Plug 'kevinhwang91/rnvimr'
+Plug 'pechorin/any-jump.vim'
+Plug 'mg979/vim-xtabline'
+Plug 'neoclide/coc.nvim'
 call plug#end()
 filetype plugin indent on
 
@@ -91,8 +85,7 @@ filetype plugin indent on
 set background=dark
 " colorscheme solarized
 colorscheme molokai
-"colorscheme phd
-
+" colorscheme phd
 
 " 禁止光标闪烁
 set gcr=a:block-blinkon0
@@ -157,8 +150,8 @@ set nowrap
 let g:Powerline_colorscheme='solarized256'
 " let g:user_emmet_leader_key='<C-Z>'
 " 设置Complete
- let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
- let g:ycm_key_list_select_completion = ['<Down>']
+let g:ycm_key_list_select_completion = ['<TAB>', '<Down>']
+let g:ycm_key_list_select_completion = ['<Down>']
 " esc 映射jj
 imap jj <esc>
 " imap <Tab> <C-P>
@@ -171,3 +164,151 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
+let g:loaded_clipboard_provider = 1
+
+
+" Normal mode: Jump to definition under cursore
+nnoremap <leader>j :AnyJump<CR>
+
+" Visual mode: jump to selected text in visual mode
+xnoremap <leader>j :AnyJumpVisual<CR>
+
+" Normal mode: open previous opened file (after jump)
+nnoremap <leader>ab :AnyJumpBack<CR>
+
+" Normal mode: open last closed search window again
+nnoremap <leader>al :AnyJumpLastResults<CR>
+" ===
+" === rnvimr
+" ===
+let g:rnvimr_ex_enable = 1
+let g:rnvimr_pick_enable = 1
+let g:rnvimr_draw_border = 0
+" let g:rnvimr_bw_enable = 1
+highlight link RnvimrNormal CursorLine
+nnoremap <silent> R :RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
+let g:rnvimr_action = {
+            \ '<C-t>': 'NvimEdit tabedit',
+            \ '<C-x>': 'NvimEdit split',
+            \ '<C-v>': 'NvimEdit vsplit',
+            \ 'gw': 'JumpNvimCwd',
+            \ 'yw': 'EmitRangerCwd'
+            \ }
+let g:rnvimr_layout = { 'relative': 'editor',
+            \ 'width': &columns,
+            \ 'height': &lines,
+            \ 'col': 0,
+            \ 'row': 0,
+            \ 'style': 'minimal' }
+let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
+" ===
+" === FZF
+" ===
+set rtp+=/usr/local/opt/fzf
+set rtp+=/home/linuxbrew/.linuxbrew/opt/fzf
+set rtp+=/home/david/.linuxbrew/opt/fzf
+nnoremap <c-p> :Leaderf file<CR>
+" noremap <silent> <C-p> :Files<CR>
+noremap <silent> <C-f> :Rg<CR>
+noremap <silent> <C-h> :History<CR>
+"noremap <C-t> :BTags<CR>
+" noremap <silent> <C-l> :Lines<CR>
+noremap <silent> <C-w> :Buffers<CR>
+noremap <leader>; :History:<CR>
+" ===
+" === coc.nvim
+" ===
+let g:coc_global_extensions = [
+	\ 'coc-css',
+	\ 'coc-diagnostic',
+	\ 'coc-explorer',
+	\ 'coc-flutter-tools',
+	\ 'coc-gitignore',
+	\ 'coc-html',
+	\ 'coc-json',
+	\ 'coc-lists',
+	\ 'coc-prettier',
+	\ 'coc-pyright',
+	\ 'coc-python',
+	\ 'coc-snippets',
+	\ 'coc-sourcekit',
+	\ 'coc-stylelint',
+	\ 'coc-syntax',
+	\ 'coc-tasks',
+	\ 'coc-translator',
+	\ 'coc-tslint-plugin',
+	\ 'coc-tsserver',
+	\ 'coc-vetur',
+	\ 'coc-vimlsp',
+	\ 'coc-yaml',
+	\ 'coc-yank']
+inoremap <silent><expr> <TAB>
+	\ pumvisible() ? "\<C-n>" :
+	\ <SID>check_back_space() ? "\<TAB>" :
+	\ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+inoremap <silent><expr> <c-space> coc#refresh()
+inoremap <silent><expr> <c-o> coc#refresh()
+function! Show_documentation()
+	call CocActionAsync('highlight')
+	if (index(['vim','help'], &filetype) >= 0)
+		execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
+endfunction
+nnoremap <LEADER>h :call Show_documentation()<CR>
+" set runtimepath^=~/.config/nvim/coc-extensions/coc-flutter-tools/
+" let g:coc_node_args = ['--nolazy', '--inspect-brk=6045']
+" let $NVIM_COC_LOG_LEVEL = 'debug'
+" let $NVIM_COC_LOG_FILE = '/Users/david/Desktop/log.txt'
+
+nnoremap <silent><nowait> <LEADER>d :CocList diagnostics<cr>
+nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
+nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
+nnoremap <c-c> :CocCommand<CR>
+" Text Objects
+xmap kf <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap kf <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+xmap kc <Plug>(coc-classobj-i)
+omap kc <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+" Useful commands
+nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <leader>rn <Plug>(coc-rename)
+nmap tt :CocCommand explorer<CR>
+" coc-translator
+nmap ts <Plug>(coc-translator-p)
+" Remap for do codeAction of selected region
+function! s:cocActionsOpenFromSelected(type) abort
+  execute 'CocCommand actions.open ' . a:type
+endfunction
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>aw  <Plug>(coc-codeaction-selected)w
+" coctodolist
+" nnoremap <leader>tn :CocCommand todolist.create<CR>
+" nnoremap <leader>tl :CocList todolist<CR>
+" nnoremap <leader>tu :CocCommand todolist.download<CR>:CocCommand todolist.upload<CR>
+" coc-tasks
+noremap <silent> <leader>ts :CocList tasks<CR>
+" coc-snippets
+imap <C-l> <Plug>(coc-snippets-expand)
+vmap <C-e> <Plug>(coc-snippets-select)
+let g:coc_snippet_next = '<c-e>'
+let g:coc_snippet_prev = '<c-n>'
+imap <C-e> <Plug>(coc-snippets-expand-jump)
+let g:snips_author = 'David Chen'
+autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
