@@ -124,8 +124,7 @@ set softtabstop=2
 " ctrlp
 let g:ctrlp_map = ',,' 
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-" NERDTree
-nmap <F2> :NERDTree  <CR> 
+let g:terminal_color_14 = '#9AEDFE'
 " 注释
 map <c-c> gcc
 " 快速移动
@@ -227,8 +226,6 @@ let g:coc_global_extensions = [
 	\ 'coc-lists',
 	\ 'coc-prettier',
 	\ 'coc-pyright',
-	\ 'coc-python',
-	\ 'coc-snippets',
 	\ 'coc-sourcekit',
 	\ 'coc-stylelint',
 	\ 'coc-syntax',
@@ -309,4 +306,6 @@ let g:coc_snippet_prev = '<c-n>'
 imap <C-e> <Plug>(coc-snippets-expand-jump)
 let g:snips_author = 'David Chen'
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsoncn
+
+
 
