@@ -2,7 +2,7 @@
 
 " 
 "定义快捷键的前缀，即<Leader>
-let mapleader=";"
+let mapleader=" "
 
 
 " 设置快捷键将选中文本块复制至系统剪贴板
@@ -43,7 +43,6 @@ set nocompatible
 set wildmenu
 call plug#begin('~/.config/nvim/plugged')
 Plug 'altercation/vim-colors-solarized'
-" Plug 'SirVer/ultisnips'
 Plug 'tomasr/molokai'
 Plug 'vim-scripts/phd'
 Plug 'Lokaltog/vim-powerline'
@@ -72,9 +71,15 @@ Plug 'kevinhwang91/rnvimr'
 Plug 'pechorin/any-jump.vim'
 Plug 'mg979/vim-xtabline'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Flutter
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'f-person/pubspec-assist-nvim', { 'for' : ['pubspec.yaml'] }
+
 call plug#end()
 filetype plugin indent on
-
+"python
+let g:python_host_prog='/usr/bin/python2'
+let g:python3_host_prog='/usr/local/bin/python3'
 " 配色方案
 set background=dark
 " colorscheme solarized
@@ -127,13 +132,6 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 let g:terminal_color_14 = '#9AEDFE'
 " 注释
 map <c-c> gcc
-" 快速移动
-nnoremap ∆ :m .+1<CR>==
-nnoremap ˚ :m .-2<CR>==
-inoremap ∆ <Esc>:m .+1<CR>==gi
-inoremap ˚ <Esc>:m .-2<CR>==gi
-vnoremap ∆ :m '>+1<CR>gv=gv
-vnoremap ˚ :m '<-2<CR>gv=gv
 set hidden 
 " 设置 gvim 显示字体
 set guifont=YaHei\ Consolas\ Hybrid\ 11.5
@@ -208,9 +206,6 @@ noremap <silent> <C-h> :History<CR>
 " noremap <silent> <C-l> :Lines<CR>
 noremap <silent> <C-w> :Buffers<CR>
 noremap <leader>; :History:<CR>
-"disabled
-let g:loaded_python_provider=0
-let g:loaded_ruby_provider=0
 
 " ===
 " === coc.nvim
@@ -306,6 +301,4 @@ let g:coc_snippet_prev = '<c-n>'
 imap <C-e> <Plug>(coc-snippets-expand-jump)
 let g:snips_author = 'David Chen'
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsoncn
-
-
 
